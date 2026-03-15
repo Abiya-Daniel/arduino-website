@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT 13 | Arduino Hackathon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth;}
+body{background:#06080f;color:#e8fefe;position:relative;}
+
+/* Particles Background */
+#particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+
+/* Navbar */
+.navbar{
+  position:fixed;top:0;width:100%;
+  background:rgba(5,7,12,0.95);
+  padding:15px 8%;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid #00f7ff30;
+  z-index:1000;
+}
+.logo{font-size:24px;font-weight:700;color:#00f7ff;cursor:pointer;}
+.nav-links{list-style:none;display:flex;gap:25px;}
+.nav-links a{text-decoration:none;color:#e8fefe;transition:0.3s;}
+.nav-links a:hover{color:#00f7ff;}
+.nav-links li { position: relative; }
+.dropdown-content { display: none; position: absolute; background-color: #0b0e16; min-width: 180px; border-radius: 8px; border: 1px solid #00f7ff40; box-shadow: 0 5px 15px #00f7ff50; z-index: 1001; top: 50px; }
+.dropdown-content a { color: #e8fefe; padding: 10px 15px; display: block; text-decoration: none; transition: 0.2s; }
+.dropdown-content a:hover { background: #00f7ff20; color: #00f7ff; }
+.dropdown:hover .dropdown-content { display: block; }
+.dropbtn::after { content: " ▼"; font-size: 12px; }
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px;}
+.hamburger div{width:25px;height:3px;background:#00f7ff;border-radius:2px;}
+
+/* Hero Banner */
+.hero-banner{max-width:1200px;margin:100px auto 20px auto; background:rgba(0,0,0,0.4);backdrop-filter:blur(10px); border-radius:16px;border:1px solid #00f7ff40; overflow:hidden;display:flex;justify-content:center;align-items:center;}
+.hero-banner img{width:100%;display:block;border-radius:16px;}
+
+/* Hero Content */
+.hero-content{max-width:900px;margin:30px auto;text-align:center;}
+.hero-content h1{font-size:48px;color:#00f7ff;margin-bottom:10px;}
+.hero-content h3{font-size:24px;color:#19d5db;margin-bottom:20px;}
+.hero-content p{color:#e8fefe;margin-bottom:25px;}
+.hero-content button{padding:12px 25px;font-size:18px;color:#06080f;background:#00f7ff;border:none;border-radius:8px;cursor:pointer;transition:0.3s;}
+.hero-content button:hover{background:#00d0ff;}
+
+/* Countdown */
+.countdown{display:flex;justify-content:center;gap:20px;font-size:20px;margin-bottom:20px;}
+.countdown .time{text-align:center;padding:15px 20px;border:1px solid #00f7ff40;border-radius:10px;}
+
+/* Sections */
+section{padding:90px 10%;}
+.title{text-align:center;font-size:40px;margin-bottom:40px;color:#00f7ff;}
+.about-box{max-width:900px;margin:auto;background:#0b0e16;padding:30px;border-radius:12px;line-height:1.7;border:1px solid #00f7ff40;}
+
+/* Timeline & Cards */
+.timeline{display:flex;justify-content:space-between;position:relative;max-width:1000px;margin:auto;flex-wrap:wrap;}
+.timeline::before{content:'';position:absolute;top:25px;left:0;width:100%;height:4px;background:#00f7ff;z-index:-1;}
+.step{text-align:center;width:18%;position:relative;margin-bottom:20px;cursor:pointer;transition:0.3s;}
+.step:hover{transform:translateY(-5px);box-shadow:0 10px 20px #00f7ff50;}
+.circle{width:50px;height:50px;background:#00f7ff;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;color:black;font-weight:700;}
+.step p{margin-top:15px;}
+
+/* Popups */
+.card-popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);max-width:500px;background:#0b0e16;border-radius:12px;padding:30px;border:2px solid #00f7ff50;z-index:2000;box-shadow:0 10px 25px #00f7ff80;}
+.card-popup h3{color:#00f7ff;margin-bottom:15px;}
+.card-popup p{line-height:1.7;color:#e8fefe;}
+.close-btn{position:absolute;top:10px; right:15px;cursor:pointer;font-weight:bold;color:#00f7ff;}
+
+/* Prizes */
+.prize-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;max-width:900px;margin:auto;}
+.prize{background:#0b0e16;padding:40px;text-align:center;border-radius:12px;border:1px solid #00f7ff30;transition:0.3s;cursor:pointer;}
+.prize:hover{transform:translateY(-5px);box-shadow:0 10px 25px #00f7ff80;}
+.prize h3{color:#00f7ff;}
+
+/* FAQ Accordion */
+.accordion{max-width:900px;margin:auto;display:grid;gap:15px;}
+.item{background:#0b0e16;padding:20px;border-radius:12px;cursor:pointer;border:1px solid #00f7ff30;transition:0.3s;position:relative;}
+.item:hover{transform:translateY(-5px);box-shadow:0 10px 20px #00f7ff50;}
+.item .content{display:none;padding:10px 20px;margin-top:10px;border-left:3px solid #00f7ff;border-radius:0 0 12px 12px;}
+.item.active .content{display:block;}
+
+/* Contact */
+.contact{max-width:800px;margin:auto;background:#0b0e16;padding:30px;border-radius:12px;border:1px solid #00f7ff40;line-height:2;}
+.contact b{color:#00f7ff;}
+.contact a{color:#19d5db;text-decoration:none;}
+.contact a:hover{text-decoration:underline;}
+.map-container{margin-top:15px;width:100%;height:300px;border-radius:12px;overflow:hidden;border:1px solid #00f7ff40;}
+
+/* Footer */
+footer{margin-top:60px;padding:25px;text-align:center;background:#05070c;border-top:1px solid #00f7ff40;}
+
+/* Mobile */
+@media(max-width:768px){
+  .hero-banner{margin:120px 20px 20px 20px;}
+  .timeline{flex-direction:column;}
+  .step{width:100%;margin-bottom:30px;}
+  .nav-links{display:none;flex-direction:column;gap:10px;background:rgba(5,7,12,0.95);position:absolute;top:70px;right:8%;width:200px;padding:15px;border-radius:10px;}
+  .nav-links.active{display:flex;}
+  .hamburger{display:flex;}
+  .countdown{flex-direction:column;gap:10px;font-size:18px;}
+  .hero-content h1{font-size:36px;}
+  .hero-content h3{font-size:20px;}
+  .hero-content p{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div id="particles-js"></div>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">PROJECT 13</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#guidelines">Guidelines</a></li>
+    <li><a href="#timeline">Structure</a></li>
+    <li><a href="#prize">Prizes</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <img src="project13.jpg" alt="PROJECT 13 Banner">
+</div>
+
+<!-- Hero Content + Countdown + Register -->
+<section class="hero-content">
+  <div class="about-box">
+    <h1>PROJECT 13</h1>
+    <h3>Arduino Hackathon – Build Ideas Into Intelligent Hardware</h3>
+    <p>A national-level hardware innovation challenge where students design and prototype creative solutions using Arduino and embedded systems.</p>
+    
+    <!-- COUNTDOWN -->
+    <div class="countdown">
+      <div class="time"><h2 id="d">0</h2><p>Days</p></div>
+      <div class="time"><h2 id="h">0</h2><p>Hours</p></div>
+      <div class="time"><h2 id="m">0</h2><p>Minutes</p></div>
+      <div class="time"><h2 id="s">0</h2><p>Seconds</p></div>
+    </div>
+    
+    <button onclick="window.open('https://forms.gle/9bfCHbeRwbWEsxaS6','_blank')">Register Now</button>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+<h2 class="title">About PROJECT 13</h2>
+<div class="about-box">
+PROJECT 13 is a hardware innovation hackathon designed to encourage students to explore the world of embedded systems and Arduino-based technology. The event provides a platform for students to transform creative ideas into working hardware prototypes while developing technical and problem-solving skills.
+<br><br>
+Participants will begin with an introductory Arduino workshop where they will gain knowledge about sensors, microcontrollers, and programming. After the workshop, teams will complete screening tasks designed to test their creativity and technical abilities.
+<br><br>
+The best teams will then be shortlisted to participate in the final hackathon round, where they will design, develop, and present innovative hardware solutions.
+<br><br>
+PROJECT 13 aims to promote creativity, collaboration, and engineering innovation among students.</div>
+</section>
+
+<!-- Guidelines -->
+<section id="guidelines">
+<h2 class="title">Guidelines</h2>
+<div class="accordion">
+  <div class="item" onclick="openCard('guideline1')"><h3>Team Requirements</h3></div>
+  <div class="item" onclick="openCard('guideline2')"><h3>Registration</h3></div>
+  <div class="item" onclick="openCard('guideline3')"><h3>Equipment</h3></div>
+  <div class="item" onclick="openCard('guideline4')"><h3>Rules and Regulations</h3></div>
+</div>
+</section>
+
+<!-- Guidelines Popups -->
+<div class="card-popup" id="guideline1"><span class="close-btn" onclick="closeCard('guideline1')">×</span><h3>Team Requirements</h3><p>Each team must consist of 3–4 participants who are students from a recognized institution.</p></div>
+<div class="card-popup" id="guideline2"><span class="close-btn" onclick="closeCard('guideline2')">×</span><h3>Registration</h3><p>Participants must complete the registration process, and the registration fee is ₹300 per team.</p></div>
+<div class="card-popup" id="guideline3"><span class="close-btn" onclick="closeCard('guideline3')">×</span><h3>Equipment</h3><p>Teams must bring at least one laptop for development. The Arduino kits required for the final round will be provided by the organizers.</p></div>
+<div class="card-popup" id="guideline4"><span class="close-btn" onclick="closeCard('guideline4')">×</span><h3>Rules and Regulations</h3><p>Participants must follow the event schedule and instructions provided by the organizing team.
+Any form of plagiarism or malpractice will lead to disqualification, and the decision of the organizing committee will be final.</p></div>
+
+<!-- Timeline -->
+<section id="timeline">
+<h2 class="title">Event Structure</h2>
+<div class="timeline">
+  <div class="step" onclick="openCard('event1')"><div class="circle">1</div><p>Arduino Workshop</p></div>
+  <div class="step" onclick="openCard('event2')"><div class="circle">2</div><p>Screening Challenges</p></div>
+  <div class="step" onclick="openCard('event3')"><div class="circle">3</div><p>Team Shortlisting</p></div>
+  <div class="step" onclick="openCard('event4')"><div class="circle">4</div><p>Hardware Workshop</p></div>
+  <div class="step" onclick="openCard('event5')"><div class="circle">5</div><p>Final Hackathon</p></div>
+</div>
+</section>
+
+<!-- Event Popups -->
+<div class="card-popup" id="event1"><span class="close-btn" onclick="closeCard('event1')">×</span><h3>Arduino Workshop<br>18th March 2026</h3><p>Participants attend a technical session covering Arduino programming, sensors, and hardware integration.</p></div>
+<div class="card-popup" id="event2"><span class="close-btn" onclick="closeCard('event2')">×</span><h3>Screening Challenges<br>19th March 2026</h3><p>Teams complete a set of tasks designed to test their problem-solving ability and creativity.</p></div>
+<div class="card-popup" id="event3"><span class="close-btn" onclick="closeCard('event3')">×</span><h3>Team Shortlisting<br>21st March 2026</h3><p>Based on the screening tasks, the best performing teams will be shortlisted.</p></div>
+<div class="card-popup" id="event4"><span class="close-btn" onclick="closeCard('event4')">×</span><h3>Hardware Workshop<br>22nd March 2026</h3><p>Shortlisted teams attend a hands-on training session to prepare for the hackathon.</p></div>
+<div class="card-popup" id="event5"><span class="close-btn" onclick="closeCard('event5')">×</span><h3>Final Hackathon<br>22nd March 2026</h3><p>Teams design and build an Arduino-based prototype and present their solution.</p></div>
+
+<!-- Prize Section -->
+<section id="prize">
+<h2 class="title">Prize Pool ₹5000</h2>
+<div class="prize-grid">
+  <div class="prize"><h3>1st Prize</h3><p>₹3000</p></div>
+  <div class="prize"><h3>2nd Prize</h3><p>₹1500</p></div>
+  <div class="prize"><h3>3rd Prize</h3><p>₹500</p></div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+<h2 class="title">FAQ</h2>
+<div class="accordion">
+  <div class="item"><h3>Who can participate in the event?</h3><div class="content">Students from any college or university who are interested in electronics and innovation can participate.</div></div>
+  <div class="item"><h3>Do participants need prior Arduino knowledge?</h3><div class="content">No prior experience is required. The workshop will cover the basics.</div></div>
+  <div class="item"><h3>What should participants bring, and will hardware be provided ?</h3><div class="content">Participants must bring at least one laptop per team for programming and development. Arduino kits and required hardware components for the final hackathon will be provided by the organizers.</div></div>
+  <div class="item"><h3>What are the judging criteria for the projects ?</h3><div class="content">Projects will be evaluated based on innovation, technical implementation, functionality, and the effectiveness of the solution presented by the team.</div></div>
+  <div class="item"><h3>Will certificates be given ?</h3><div class="content">Yes, participation certificates will be provided to all registered participants.</div></div>
+</div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+<h2 class="title">Contact Us</h2>
+<div class="contact">
+<p><b>Organized by</b><br>Electronics and Innovation Forum (EIF)<br>Institution Innovation Council (IIC)</p>
+<p><b>Email</b><br><a href="mailto:eifceperumon@gmail.com">eifceperumon@gmail.com</a></p>
+<p><b>Phone</b><br>
+<a href="tel:+917306360066">Rahul Sharma: +91 73063 60066</a><br>
+<a href="tel:+918301926497">Adithiyan R: +91 83019 26497</a><br>
+<a href="tel:+919496186797">Abiya Daniel: +91 94961 86797</a></p>
+<p><b>Venue</b><br>College of Engineering Perumon, Kollam, Kerala</p>
+<div class="map-container">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.6352912076726!2d76.57415827486264!3d8.89354689395116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05b502d9a31f63%3A0xd46f5d6c89f0a6fc!2sCollege%20of%20Engineering%20Perumon!5e0!3m2!1sen!2sin!4v1678800000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+</div>
+</div>
+</section>
+
+<footer>PROJECT 13 – Arduino Hackathon Organized by Electronics and Innovation Forum (EIF) & Institution’s Innovation Council (IIC)<br>
+© 2026 PROJECT 13. All Rights Reserved.</footer>
+
+<script>
+// Hamburger toggle
+function toggleMenu(){document.querySelector('.nav-links').classList.toggle('active');}
+
+// Popups
+function openCard(id){document.getElementById(id).style.display='block';}
+function closeCard(id){document.getElementById(id).style.display='none';}
+
+// FAQ Accordion
+document.querySelectorAll(".accordion .item h3").forEach(header => {
+  header.addEventListener("click", () => { header.parentElement.classList.toggle("active"); });
+});
+
+// Particles.js
+particlesJS("particles-js", {
+  "particles": {
+    "number": { "value": 80 },
+    "color": { "value": "#00f7ff" },
+    "shape": { "type": "circle" },
+    "opacity": { "value": 0.5 },
+    "size": { "value": 3 },
+    "line_linked": { "enable": true, "distance": 150, "color": "#00f7ff", "opacity": 0.4, "width": 1 },
+    "move": { "enable": true, "speed": 2 }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+    "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 0.6 } }, "push": { "particles_nb": 4 } }
+  },
+  "retina_detect": true
+});
+
+// Countdown
+const d=document.getElementById('d'),h=document.getElementById('h'),m=document.getElementById('m'),s=document.getElementById('s');
+const targetDate=new Date("March 22 2026 13:00:00").getTime();
+function updateCountdown(){const now=new Date().getTime();const diff=targetDate-now;d.innerHTML=Math.floor(diff/(1000*60*60*24));h.innerHTML=Math.floor((diff%(1000*60*60*24))/(1000*60*60));m.innerHTML=Math.floor((diff%(1000*60*60))/(1000*60));s.innerHTML=Math.floor((diff%(1000*60))/1000);}
+setInterval(updateCountdown,1000);updateCountdown();
+</script>
+</body>
+</html>
